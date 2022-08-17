@@ -1,0 +1,8 @@
+I copied the server folder from the express-mongo-rest-api-example
+here you will fine the conf.env file
+the dockerfile is the file that I used for building the image
+
+TESTING:
+clone the express-mongo-rest-api-example git repository 
+add the Dockerfile in the root of the git repository 
+replace the server folder by my server folder
