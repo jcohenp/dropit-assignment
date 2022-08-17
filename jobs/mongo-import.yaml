@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodb-import
+  labels:
+    app: mongodb
+spec:
+  backoffLimit: 5
+  activeDeadlineSeconds: 100
+  template:
+    spec:
+      containers:
+      - name: mongoimport
+        image: mongo
+        args:
+          - /bin/sh
+          - '-c'
+          - mongoimport --host mongodb-service -u username -p password --authenticationDatabase admin --type csv -d  sample_airbnb -c listingsAndReviews --headerline --drop /db/listingsAndReviews.csv
+        volumeMounts:
+          - name: db-volume
+            mountPath: /db
+      volumes:
+        - name: db-volume
+          hostPath:
+            path: /mnt/vpath
+      restartPolicy: OnFailure
+       

@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodb-dump
+  labels:
+    app: mongodb
+spec:
+  backoffLimit: 5
+  activeDeadlineSeconds: 100
+  template:
+    spec:
+      containers:
+      - name: mongodump
+        image: mongo
+        args:
+          - /bin/sh
+          - '-c'
+          - mongodump --host mongodb-service -u username -p password --authenticationDatabase admin --db sample_airbnb --out /db
+        volumeMounts:
+          - name: db-volume
+            mountPath: /db
+      volumes:
+        - name: db-volume
+          hostPath:
+            path: /mnt/vpath
+      restartPolicy: OnFailure
+       

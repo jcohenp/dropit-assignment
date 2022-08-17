@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-deployment
+  labels:
+    app: mongodb-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-express
+  template:
+    metadata:
+      labels:
+        app: mongodb-express
+    spec:
+      containers:
+      - name: mongodb-express
+        image: cohenj55/mongodb-express
+        ports:
+        - containerPort: 5001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-express-service
+spec:
+  selector:
+    app: mongodb-express
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5001
+      targetPort: 5001
+      nodePort: 30002
